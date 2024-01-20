@@ -1,7 +1,8 @@
-import { InputBaseElement } from '.';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
 import { TValidationResult } from '../../services/Validators/type';
+
+import { InputBaseElement } from '.';
 
 interface IProps {
   id: string;
@@ -10,7 +11,7 @@ interface IProps {
   placeholder?: string;
   type?: string;
   validate?: (value: string) => TValidationResult;
-  onBlur: (event: ElementEvents['blur']) => void;
+  onBlur?: (event: ElementEvents['blur']) => void;
 }
 
 type Refs = {

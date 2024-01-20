@@ -10,8 +10,8 @@ interface IProps {
   type?: string;
   value?: string;
   onBlur?: (event: ElementEvents['blur']) => void;
-  events: {
-    blur: (event: ElementEvents['blur']) => void;
+  events?: {
+    blur?: (event: ElementEvents['blur']) => void;
   };
 }
 

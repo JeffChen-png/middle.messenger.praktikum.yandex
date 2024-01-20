@@ -82,7 +82,7 @@ export function navigate(page: string) {
   const app = document.querySelector('#app');
 
   const [Block, props] = pages[page];
-  const component = new Block(props);
+  const component = new Block(props || {});
 
   if (!app) return;
 

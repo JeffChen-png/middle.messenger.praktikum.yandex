@@ -5,9 +5,14 @@ import EventBus from '../EventBus';
 import { EVENTS, TBlockElement, TCompileContext, TPropsBase } from './types';
 
 // eslint-disable-next-line no-use-before-define
-type TRefsBase = Record<string, Component | Element>;
+type TRefsBase = Record<string, Component | HTMLElement>;
 
-class Component<TProps extends TPropsBase = TPropsBase, Refs extends TRefsBase = TRefsBase> {
+export interface ComponentClass<P extends TPropsBase = any, R extends TRefsBase = any> extends Function {
+  // eslint-disable-next-line no-use-before-define
+  new (props: P): Component<P, R>;
+  componentName?: string;
+}
+class Component<TProps extends TPropsBase = any, Refs extends TRefsBase = any> {
   static EVENTS = EVENTS;
 
   #element: TBlockElement = null;
@@ -65,7 +70,9 @@ class Component<TProps extends TPropsBase = TPropsBase, Refs extends TRefsBase =
     if (!events) return;
 
     Object.entries(events).forEach(([eventName, event]) => {
-      this.#element?.addEventListener(eventName, event);
+      // eslint-disable-next-line no-underscore-dangle
+      const _event = event as EventListener;
+      this.#element?.addEventListener(eventName, _event);
     });
   }
 
@@ -104,7 +111,7 @@ class Component<TProps extends TPropsBase = TPropsBase, Refs extends TRefsBase =
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  protected componentDidMount(oldProps?: TProps) {}
+  protected componentDidMount(_oldProps?: TProps) {}
 
   public dispatchComponentDidMount() {
     this.eventBus.emit(Component.EVENTS.FLOW_CDM);
@@ -113,7 +120,7 @@ class Component<TProps extends TPropsBase = TPropsBase, Refs extends TRefsBase =
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  protected componentDidUpdate(oldProps: TProps, newProps: TProps) {
+  protected componentDidUpdate(_oldProps: TProps, _newProps: TProps) {
     return true;
   }
 

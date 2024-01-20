@@ -9,10 +9,11 @@ export enum EVENTS {
 }
 
 export type ElementEvents = HTMLElementEventMap;
+type ValidationFN = (target: string) => TValidationResult;
 
 export interface TPropsBase extends Record<string, any> {
-  events?: Partial<Record<keyof ElementEvents, (event: ElementEvents[keyof ElementEvents]) => void>>;
-  validate?: Record<string, (target: string) => TValidationResult>;
+  events?: Partial<Record<keyof ElementEvents, Function>>;
+  validate?: Record<string, ValidationFN> | ValidationFN;
 }
 
 export type TBlockElement = HTMLElement | null;
