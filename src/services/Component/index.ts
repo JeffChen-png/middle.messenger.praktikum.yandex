@@ -45,7 +45,7 @@ class Component<TProps extends TPropsBase = any, Refs extends TRefsBase = any> {
     this.eventBus.on(Component.EVENTS.INIT, this.#init.bind(this));
     this.eventBus.on(Component.EVENTS.FLOW_CDM, this.#componentDidMount.bind(this));
     this.eventBus.on(Component.EVENTS.FLOW_CDU, this.#componentDidUpdate.bind(this));
-    this.eventBus.on(Component.EVENTS.FLOW_CDU, this.#componentDidUnmount.bind(this));
+    this.eventBus.on(Component.EVENTS.FLOW_CWU, this.#componentDidUnmount.bind(this));
     this.eventBus.on(Component.EVENTS.FLOW_RENDER, this.#render.bind(this));
   }
 
@@ -73,6 +73,18 @@ class Component<TProps extends TPropsBase = any, Refs extends TRefsBase = any> {
       // eslint-disable-next-line no-underscore-dangle
       const _event = event as EventListener;
       this.#element?.addEventListener(eventName, _event);
+    });
+  }
+
+  #removeEvents() {
+    const { events } = this.props;
+
+    if (!events) return;
+
+    Object.entries(events).forEach(([eventName, event]) => {
+      // eslint-disable-next-line no-underscore-dangle
+      const _event = event as EventListener;
+      this.#element?.removeEventListener(eventName, _event);
     });
   }
 
@@ -147,6 +159,7 @@ class Component<TProps extends TPropsBase = any, Refs extends TRefsBase = any> {
     }
 
     this.#element = newElement;
+    this.#removeEvents();
     this.#addEvents();
   }
 
