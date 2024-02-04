@@ -1,6 +1,6 @@
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
-import { navigate } from '../../services/Navigate';
+import { pathnames, router } from '../../services/Router';
 
 interface IProps {
   toChats?: (event: ElementEvents['click']) => void;
@@ -11,7 +11,7 @@ export class NotFound extends Component<IProps> {
     super({
       ...props,
       toChats: () => {
-        navigate('chat');
+        router.go(pathnames.chat);
       },
     });
   }

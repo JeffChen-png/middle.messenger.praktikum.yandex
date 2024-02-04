@@ -2,7 +2,7 @@ import { Input } from '../../Components';
 import { IChatItem } from '../../Features/ChatListItem/ChatListItem';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
-import { navigate } from '../../services/Navigate';
+import { pathnames, router } from '../../services/Router';
 
 interface IProps {
   chats?: IChatItem[];
@@ -22,7 +22,7 @@ export class ChatList extends Component<IProps, Refs> {
       openProfile: (event: ElementEvents['click']) => {
         event.preventDefault();
 
-        navigate('userProfile');
+        router.go(pathnames.userProfile);
       },
     });
   }

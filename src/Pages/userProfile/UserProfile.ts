@@ -1,7 +1,7 @@
 import { Input } from '../../Components';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
-import { navigate } from '../../services/Navigate';
+import { pathnames, router } from '../../services/Router';
 import * as validators from '../../services/Validators';
 
 interface IProps {
@@ -59,21 +59,21 @@ export class UserProfile extends Component<IProps, Refs> {
           fieldsValues[field] = value;
         });
 
-        console.log(fieldsValues);
-
         if (!isValid) return;
 
-        navigate('signIn');
+        console.log(fieldsValues);
+
+        router.go(pathnames.userProfile);
       },
       exit: (event: ElementEvents['click']) => {
         event.preventDefault();
 
-        navigate('signIn');
+        router.go(pathnames.signIn);
       },
       changePassword: (event: ElementEvents['click']) => {
         event.preventDefault();
 
-        navigate('changePassword');
+        router.go(pathnames.signIn);
       },
     });
   }

@@ -1,7 +1,7 @@
 import { Input } from '../../Components';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
-import { navigate } from '../../services/Navigate';
+import { pathnames, router } from '../../services/Router';
 import * as validators from '../../services/Validators';
 
 interface IProps {}
@@ -33,12 +33,12 @@ export class SignInPage extends Component<IProps, Refs> {
           password,
         });
 
-        navigate('list');
+        router.go(pathnames.chat);
       },
       onSignUp: (event: ElementEvents['click']) => {
         event.preventDefault();
 
-        navigate('signUp');
+        router.go(pathnames.signUp);
       },
     });
   }

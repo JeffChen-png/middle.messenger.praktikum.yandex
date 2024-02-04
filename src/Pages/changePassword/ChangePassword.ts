@@ -1,7 +1,7 @@
 import { Input } from '../../Components';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
-import { navigate } from '../../services/Navigate';
+import { pathnames, router } from '../../services/Router';
 import * as validators from '../../services/Validators';
 
 interface IProps {
@@ -47,7 +47,7 @@ export class ChangePassword extends Component<IProps, Refs> {
 
         if (!isValid) return;
 
-        navigate('signIn');
+        router.go(pathnames.signIn);
       },
     });
   }

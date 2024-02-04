@@ -13,3 +13,8 @@ export type TOptions = {
   data?: any;
   retries?: number;
 };
+
+export type ApiError = {
+  status?: number;
+  reason: string;
+};

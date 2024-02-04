@@ -1,7 +1,7 @@
 import { UploadFile } from '../../Components';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
-import { navigate } from '../../services/Navigate';
+import { pathnames, router } from '../../services/Router';
 
 interface IProps {}
 
@@ -20,7 +20,7 @@ export class LoadAvatar extends Component<IProps, Refs> {
 
         console.log({ value });
 
-        navigate('signIn');
+        router.go(pathnames.userProfile);
       },
     });
   }

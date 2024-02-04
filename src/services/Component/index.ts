@@ -5,7 +5,7 @@ import EventBus from '../EventBus';
 import { EVENTS, TBlockElement, TCompileContext, TPropsBase } from './types';
 
 // eslint-disable-next-line no-use-before-define
-type TRefsBase = Record<string, Component | HTMLElement>;
+export type TRefsBase = Record<string, Component | HTMLElement>;
 
 export interface ComponentClass<P extends TPropsBase = any, R extends TRefsBase = any> extends Function {
   // eslint-disable-next-line no-use-before-define
@@ -158,8 +158,8 @@ class Component<TProps extends TPropsBase = any, Refs extends TRefsBase = any> {
       this.#element.replaceWith(newElement);
     }
 
-    this.#element = newElement;
     this.#removeEvents();
+    this.#element = newElement;
     this.#addEvents();
   }
 
