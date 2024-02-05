@@ -1,3 +1,3 @@
-export { registerAppState } from './AppState';
+export { initState, registerAppState } from './AppState';
 export { connect } from './connect';
 export { Store, StoreEvents } from './store';

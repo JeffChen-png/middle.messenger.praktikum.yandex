@@ -1,7 +1,18 @@
+import { UserResponse } from '../../API/Auth';
+import { ChatResponce } from '../../API/Chats';
 import { Store } from './store';
 
 export type AppState = {
   error?: string;
+  me?: UserResponse;
+  chats: {
+    chatsById: Record<string, ChatResponce>;
+    chatIds: number[];
+    offset: number;
+    limit: number;
+    search: string;
+    loading: boolean;
+  };
 };
 
 declare global {
@@ -10,8 +21,15 @@ declare global {
   }
 }
 
-const initState: AppState = {
-  error: undefined,
+export const initState: AppState = {
+  chats: {
+    chatsById: {},
+    chatIds: [],
+    offset: 0,
+    limit: 30,
+    loading: false,
+    search: '',
+  },
 };
 
 export const registerAppState = () => {

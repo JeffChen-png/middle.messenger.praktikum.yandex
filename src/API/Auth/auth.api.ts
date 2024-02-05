@@ -1,6 +1,6 @@
 import { BaseAPI } from '../../services/BaseApiClient';
 import { ApiError, HTTPTransport } from '../../services/HTTPClient';
-import { SignInResponse, SignUpRequest, SignUpResponse, SingInRequest } from './type';
+import { LogOutResponse, SignInResponse, SignUpRequest, SignUpResponse, SingInRequest, UserResponse } from './type';
 
 const authAPIInstance = new HTTPTransport('/auth');
 
@@ -10,9 +10,14 @@ export class AuthApi extends BaseAPI {
   }
 
   signUp(data: SignUpRequest): Promise<SignUpResponse | ApiError> {
-    return authAPIInstance.get('/signup', { data });
+    return authAPIInstance.post('/signup', { data });
   }
 
-  // user
-  // logout
+  request(): Promise<UserResponse | ApiError> {
+    return authAPIInstance.get('/user');
+  }
+
+  logOut(): Promise<LogOutResponse | ApiError> {
+    return authAPIInstance.post('/logout');
+  }
 }

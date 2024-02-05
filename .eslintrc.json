@@ -23,6 +23,7 @@
     "no-restricted-syntax":"off",
     "prefer-promise-reject-errors": "off",
     "guard-for-in": "off",
+    "no-else-return": "off",
     "simple-import-sort/imports": [
       "error",
       {
