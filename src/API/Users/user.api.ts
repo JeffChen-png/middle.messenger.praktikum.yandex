@@ -29,7 +29,10 @@ export class UserApi extends BaseAPI {
   }
 
   changeAvatar(data: ChangeProfileAvatarRequest): Promise<ChangeProfileAvatarResponse | ApiError> {
-    return userAPIInstance.put('/profile/avatar', { data });
+    const form = new FormData();
+    form.append('avatar', data.avatar);
+
+    return userAPIInstance.put('/profile/avatar', { data: form });
   }
 
   search(data: SearchRequest): Promise<SearchResponse | ApiError> {

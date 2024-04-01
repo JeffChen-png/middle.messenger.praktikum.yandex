@@ -1,4 +1,5 @@
 import { Input } from '../../Components';
+import { signin } from '../../Controllers/Auth';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
 import { pathnames, router } from '../../services/Router';
@@ -24,16 +25,7 @@ export class SignInPage extends Component<IProps, Refs> {
         const login = this.refs.login.value();
         const password = this.refs.password.value();
 
-        if (!login) {
-          return;
-        }
-
-        console.log({
-          login,
-          password,
-        });
-
-        router.go(pathnames.chat);
+        signin({ login, password });
       },
       onSignUp: (event: ElementEvents['click']) => {
         event.preventDefault();

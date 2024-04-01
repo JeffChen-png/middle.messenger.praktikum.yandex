@@ -14,6 +14,7 @@ export enum pathnames {
   removeUser = '/remove-user',
   loadAvatar = '/load-avatar',
   changePassword = '/change-password',
+  createChat = '/create-chat',
 }
 
 export const routes: Array<TPageRoust> = [
@@ -27,4 +28,5 @@ export const routes: Array<TPageRoust> = [
   { path: pathnames.removeUser, Component: Pages.RemoveUser },
   { path: pathnames.loadAvatar, Component: Pages.LoadAvatar },
   { path: pathnames.changePassword, Component: Pages.ChangePassword },
+  { path: pathnames.createChat, Component: Pages.CreateChat },
 ];

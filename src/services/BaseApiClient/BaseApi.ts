@@ -7,19 +7,19 @@ interface IBaseAPI {
 }
 
 export class BaseAPI implements IBaseAPI {
-  create(...args: any[]) {
+  create(..._args: any[]) {
     throw new Error('Not implemented');
   }
 
-  request(...args: any[]) {
+  request(..._args: any[]) {
     throw new Error('Not implemented');
   }
 
-  update(...args: any[]) {
+  update(..._args: any[]) {
     throw new Error('Not implemented');
   }
 
-  delete(...args: any[]) {
+  delete(..._args: any[]) {
     throw new Error('Not implemented');
   }
 }

@@ -7,9 +7,11 @@
 .input__container,
 .uploadFile__container {
   display: flex;
-  height: 38px;
+  height: 50px;
   flex-direction: column;
   align-content: flex-end;
+  align-items: center;
+  gap: 10px;
 }
 
 .input__element {

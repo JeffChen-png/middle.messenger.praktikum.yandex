@@ -1,4 +1,5 @@
 import { Input } from '../../Components';
+import { signup } from '../../Controllers/Auth';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
 import { pathnames, router } from '../../services/Router';
@@ -45,11 +46,14 @@ export class SignUpPage extends Component<IProps, Refs> {
           fieldsValues[field] = fieldValue;
         });
 
-        console.log(fieldsValues);
-
-        if (!isValid) return;
-
-        router.go(pathnames.signIn);
+        signup({
+          login: fieldsValues.login,
+          email: fieldsValues.email,
+          first_name: fieldsValues.firstName,
+          second_name: fieldsValues.secondName,
+          phone: fieldsValues.phone,
+          password: fieldsValues.password,
+        });
       },
     });
   }

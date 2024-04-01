@@ -8,6 +8,7 @@ import {
 } from '../../API/Users';
 import { pathnames, router } from '../../services/Router';
 import { initState } from '../../services/Store';
+import * as validators from '../../services/Validators';
 import { apiHasError, getApiError } from '../../utils';
 import { getMe } from '../Auth/auth.controller';
 
@@ -27,7 +28,29 @@ export const searchUsers = async (data: SearchRequest): Promise<SearchResponse |
   }
 };
 
+const changeUserValidationSchema: Record<keyof ChangeProfileRequest, typeof validators.name | undefined> = {
+  first_name: validators.name,
+  second_name: validators.name,
+  display_name: undefined,
+  login: validators.login,
+  email: validators.email,
+  phone: validators.phone,
+};
+
 export const changeUser = async (data: ChangeProfileRequest) => {
+  const validatorResult = Object.entries(data).map(([key, value]) => {
+    const fieldName = key as keyof ChangeProfileRequest;
+    const validator = changeUserValidationSchema[fieldName];
+
+    if (!validator) return true;
+
+    return validator(value).isValid;
+  });
+
+  const isValid = !validatorResult.includes(false);
+
+  if (!isValid) return;
+
   try {
     await userApi.changeProfile(data);
   } catch (error) {
@@ -37,7 +60,25 @@ export const changeUser = async (data: ChangeProfileRequest) => {
   getMe();
 };
 
+const changePasswordValidationSchema = {
+  oldPassword: validators.password,
+  newPassword: validators.password,
+};
+
 export const changePassword = async (data: ChangeProfilePasswordRequest) => {
+  const validatorResult = Object.entries(data).map(([key, value]) => {
+    const fieldName = key as keyof ChangeProfilePasswordRequest;
+    const validator = changePasswordValidationSchema[fieldName];
+
+    if (!validator) return true;
+
+    return validator(value).isValid;
+  });
+
+  const isValid = !validatorResult.includes(false);
+
+  if (!isValid) return;
+
   try {
     await userApi.changePassword(data);
   } catch (error) {

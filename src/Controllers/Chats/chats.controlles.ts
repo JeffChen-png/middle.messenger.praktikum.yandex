@@ -1,4 +1,5 @@
 import { ChatResponce, ChatsApi, CreateChatsRequest, DeleteChatsRequest } from '../../API/Chats';
+import { pathnames, router } from '../../services/Router';
 import { apiHasError, getApiError } from '../../utils';
 
 const chatsApi = new ChatsApi();
@@ -103,6 +104,8 @@ export const createChat = async (data: CreateChatsRequest) => {
     } else {
       getChats();
     }
+
+    router.go(pathnames.chat);
   } catch (error) {
     throw new Error(getApiError(error));
   }

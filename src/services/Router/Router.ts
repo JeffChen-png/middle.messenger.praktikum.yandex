@@ -71,6 +71,5 @@ class Router {
 }
 
 const router = new Router();
-router.start();
 
 export { router };

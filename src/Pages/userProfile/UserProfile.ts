@@ -1,4 +1,6 @@
 import { Input } from '../../Components';
+import { logout } from '../../Controllers/Auth';
+import { changeUser } from '../../Controllers/User';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
 import { pathnames, router } from '../../services/Router';
@@ -59,20 +61,19 @@ export class UserProfile extends Component<IProps, Refs> {
           fieldsValues[field] = value;
         });
 
-        if (!isValid) return;
-
-        console.log(fieldsValues);
-
-        router.go(pathnames.userProfile);
+        changeUser({
+          email: fieldsValues.email,
+          login: fieldsValues.login,
+          first_name: fieldsValues.first_name,
+          second_name: fieldsValues.second_name,
+          phone: fieldsValues.phone,
+          display_name: fieldsValues.display_name,
+        });
       },
-      exit: (event: ElementEvents['click']) => {
-        event.preventDefault();
-
-        router.go(pathnames.signIn);
+      exit: () => {
+        logout();
       },
-      changePassword: (event: ElementEvents['click']) => {
-        event.preventDefault();
-
+      changePassword: () => {
         router.go(pathnames.signIn);
       },
     });

@@ -6,6 +6,15 @@ import { TLeaveChat, TStartChat } from '.';
 
 const chatsApi = new ChatsApi();
 
+const setActiveChat = (chatId: number | undefined) => {
+  window.store.set({ activeChatId: chatId });
+};
+
+const setConnectUrl = (connectionString: string) => {
+  const { activeChat } = window.store.getState();
+  window.store.set({ activeChat: { ...activeChat, connectionString } });
+};
+
 export const addUser = async (data: AddUserRequest) => {
   try {
     const responce = await chatsApi.addUser(data);
@@ -21,6 +30,7 @@ export const addUser = async (data: AddUserRequest) => {
 export const startChat = async (data: TStartChat): Promise<string | undefined> => {
   let token: string;
 
+  setActiveChat(data.chatId);
   try {
     const responce = await chatsApi.getToken({ id: data.chatId });
 
@@ -37,9 +47,20 @@ export const startChat = async (data: TStartChat): Promise<string | undefined> =
 
   wsClient.connect(connectUrl);
 
+  setConnectUrl(connectUrl);
+
   return connectUrl;
 };
 
 export const leaveChat = async (data: TLeaveChat) => {
+  const { activeChat } = window.store.getState();
+
   wsClient.disconnect(data.connectionString);
+
+  if (activeChat.connectionString !== data.connectionString) {
+    return;
+  }
+
+  setActiveChat(undefined);
+  window.store.set({ activeChat: { messages: [] } });
 };

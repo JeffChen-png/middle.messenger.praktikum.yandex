@@ -56,6 +56,8 @@ export class HTTPTransport {
         xhr.setRequestHeader(key, headers[key]);
       });
 
+      xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+
       xhr.timeout = timeout;
 
       xhr.addEventListener('load', () => {

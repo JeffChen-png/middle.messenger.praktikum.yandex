@@ -1,31 +1,29 @@
+import { ChatResponce } from '../../API/Chats';
 import { Input } from '../../Components';
+import { leaveChat } from '../../Controllers/Chat';
 import { IChatMessage } from '../../Features/ChatMessage/ChatMessage';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
+import { AppState } from '../../services/Store/AppState';
 import * as validators from '../../services/Validators';
 
 export interface IChatDetail {
+  id?: number;
+  connectionString?: string;
   messages?: IChatMessage[];
-  title?: string;
-  alt?: string;
-  src?: string;
+  chat?: DeepPartial<ChatResponce>;
   validate?: {};
-  sendMessage?: (event: ElementEvents['click']) => void;
+  sendMessage: (event: ElementEvents['click']) => void;
 }
 
 type Refs = {
   message: Input;
 };
 
-export class ChatDetail extends Component<IChatDetail, Refs> {
-  constructor(props: IChatDetail = {}) {
-    const { messages = [], title = '', alt = '', src = '', ...restProps } = props;
+export class ChatDetailRaw extends Component<IChatDetail, Refs> {
+  constructor(props: IChatDetail) {
     super({
-      ...restProps,
-      messages,
-      title,
-      alt,
-      src,
+      ...props,
       validate: {
         message: validators.message,
       },
@@ -38,6 +36,25 @@ export class ChatDetail extends Component<IChatDetail, Refs> {
         console.log({ message });
       },
     });
+  }
+
+  protected componentDidUpdate(_oldProps: IChatDetail, _newProps: IChatDetail): boolean {
+    const { connectionString: oldConnectionString } = _oldProps;
+    const { connectionString: newConnectionString } = _newProps;
+
+    if (oldConnectionString !== newConnectionString) {
+      // eslint-disable-next-line unicorn/no-lonely-if
+      if (oldConnectionString) leaveChat({ connectionString: oldConnectionString });
+    }
+
+    return true;
+  }
+
+  protected componentDidUnmount(): void {
+    const { connectionString } = this.props;
+
+    if (!connectionString) return;
+    leaveChat({ connectionString });
   }
 
   render() {
@@ -80,3 +97,13 @@ export class ChatDetail extends Component<IChatDetail, Refs> {
     `;
   }
 }
+
+const mapStateToProps = (state: AppState) => {
+  const { activeChatId, chats, activeChat } = state;
+  const chat = activeChatId ? chats.chatsById[activeChatId] : {};
+
+  return { chat, id: activeChatId, messages: activeChat.messages, connectionString: activeChat.connectionString };
+};
+
+// @ts-ignore
+export const ChatDetail = connect(mapStateToProps)(ChatDetailRaw);

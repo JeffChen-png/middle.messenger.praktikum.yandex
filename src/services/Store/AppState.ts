@@ -13,6 +13,11 @@ export type AppState = {
     search: string;
     loading: boolean;
   };
+  activeChatId?: number;
+  activeChat: {
+    messages: [];
+    connectionString?: string;
+  };
 };
 
 declare global {
@@ -29,6 +34,11 @@ export const initState: AppState = {
     limit: 30,
     loading: false,
     search: '',
+  },
+  activeChatId: undefined,
+  activeChat: {
+    messages: [],
+    connectionString: undefined,
   },
 };
 

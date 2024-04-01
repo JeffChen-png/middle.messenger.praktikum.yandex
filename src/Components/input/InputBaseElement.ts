@@ -10,8 +10,10 @@ interface IProps {
   type?: string;
   value?: string;
   onBlur?: (event: ElementEvents['blur']) => void;
+  onChange?: (event: ElementEvents['change']) => void;
   events?: {
     blur?: (event: ElementEvents['blur']) => void;
+    change?: (event: ElementEvents['change']) => void;
   };
 }
 
@@ -29,6 +31,12 @@ export class InputBaseElement extends Component<IProps, Refs> {
       }
     };
 
+    const change = (event: ElementEvents['change']) => {
+      if (props.onChange) {
+        props.onChange(event);
+      }
+    };
+
     super({
       ...restProps,
       disabled,
@@ -37,6 +45,7 @@ export class InputBaseElement extends Component<IProps, Refs> {
       className,
       events: {
         blur,
+        change,
       },
     });
   }
@@ -48,15 +57,18 @@ export class InputBaseElement extends Component<IProps, Refs> {
   protected render(): string {
     const { id, value, disabled, className, type, name, placeholder } = this.props;
 
+    const formValue = Object.prototype.hasOwnProperty.call(this.props, 'value') ? `value="${value}"` : '';
+
     return `
       <input 
       class=${className} 
-      ref="input" 
+      ref="input"
       id="${id}" 
       type="${type}" 
       name="${name}"
-      value='${value}' 
-      placeholder='${placeholder}' ${disabled ? 'disabled' : ''}/>
+      ${formValue}
+      placeholder='${placeholder}' 
+      ${disabled ? 'disabled' : ''}/>
     `;
   }
 }

@@ -2,6 +2,7 @@ export { _Nav } from './_nav';
 export { AddUser } from './addUser';
 export { ChangePassword } from './changePassword';
 export { Chat } from './chat';
+export { CreateChat } from './createChat';
 export { LoadAvatar } from './loadAvatar';
 export { NotFound } from './notFound';
 export { RemoveUser } from './removeUser';

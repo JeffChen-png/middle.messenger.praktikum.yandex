@@ -29,6 +29,8 @@ Object.entries(Features).forEach(([name, component]) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  registerAppState();
   routes.forEach(route => router.use(route.path, route.Component));
+  registerAppState();
+
+  router.start();
 });

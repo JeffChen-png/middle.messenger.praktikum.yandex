@@ -4,7 +4,7 @@ import { TPropsBase } from '../Component/types';
 import { AppState } from './AppState';
 import { StoreEvents } from './store';
 
-export function connect(mapStateToProps: (state: AppState) => Partial<AppState>) {
+export function connect(mapStateToProps: (state: AppState, props?: TPropsBase) => Partial<AppState>) {
   // eslint-disable-next-line func-names
   return function <P extends TPropsBase = any, R extends TRefsBase = any>(Component: ComponentClass<P, R>) {
     return class extends Component {
@@ -13,13 +13,13 @@ export function connect(mapStateToProps: (state: AppState) => Partial<AppState>)
       constructor(props: P) {
         const { store } = window;
         // сохраняем начальное состояние
-        let state = mapStateToProps(store.getState());
+        let state = mapStateToProps(store.getState(), props);
 
         super({ ...props, ...state });
 
         this.onChangeStoreCallback = () => {
           // при обновлении получаем новое состояние
-          const newState = mapStateToProps(store.getState());
+          const newState = mapStateToProps(store.getState(), props);
 
           // если что-то из используемых данных поменялось, обновляем компонент
           if (!isEqual(state, newState)) {
