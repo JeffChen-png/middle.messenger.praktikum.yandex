@@ -1,6 +1,7 @@
 import { ChatResponce, TMessage } from '../../API/Chats';
 import { Input } from '../../Components';
 import { leaveChat, sendMessage as sendMessageFn } from '../../Controllers/Chat';
+import { addUser, deleteUser } from '../../Controllers/Chat/chat.controlles';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
 import { connect } from '../../services/Store';
@@ -14,10 +15,13 @@ export interface IChatDetail {
   chat?: DeepPartial<ChatResponce>;
   validate?: {};
   sendMessage: (event: ElementEvents['click']) => void;
+  addUser?: (event: ElementEvents['click']) => void;
+  removeUser?: (event: ElementEvents['click']) => void;
 }
 
 type Refs = {
   message: Input;
+  userId: Input;
 };
 
 export class ChatDetailRaw extends Component<IChatDetail, Refs> {
@@ -35,6 +39,28 @@ export class ChatDetailRaw extends Component<IChatDetail, Refs> {
 
         sendMessageFn(message);
       },
+      addUser: () => {
+        const userId = +this.refs.userId.value();
+        const chatId = this.props.id
+
+        if (!chatId) return 
+
+        addUser({
+          users: [userId],
+          chatId
+        });
+      },
+      removeUser: () => {
+        const userId = +this.refs.userId.value();
+        const chatId = this.props.id
+
+        if (!chatId) return 
+
+        deleteUser({
+          users: [userId],
+          chatId
+        });
+      }
     });
   }
 
@@ -58,51 +84,56 @@ export class ChatDetailRaw extends Component<IChatDetail, Refs> {
   }
 
   render() {
-    return `
-    <div class="chatDetail">
-      <div class="chatDetail_header">
-        <div class="chatDetail_img">
-          {{{ Avatar src=src alt=alt }}}
+    if (!this.props.id) {
+      return '<div></div>'
+    } else {
+      return `
+      <div class="chatDetail">
+        <div class="chatDetail_header">
+          <div class="chatDetail_img">
+            {{{ Avatar src=chat.avatar alt=alt }}}
+          </div>
+          <div class="chatDetail_title">
+            {{{ Text weight='700' type='primary' size='medium' text=chat.title }}}
+          </div>
+          <div class="chatDetail_actions">
+            {{{ Input ref='userId' placeholder='Введите айди пользователя' }}}
+            {{{ Button type='text' shape='circle' label='Добавить участника' onClick=addUser }}}
+            {{{ Button type='text' shape='circle' label='Удалить участника' onClick=removeUser }}}
+          </div>
         </div>
-        <div class="chatDetail_title">
-          {{{ Text weight='700' type='primary' size='medium' text=title }}}
+        <div class="chatDetail_body">
+          <ul class="chatDetail_list">
+            {{#each messages}}
+              <li>
+              {{{ ChatMessage 
+                  user_id=this.user_id
+                  type='message'
+                  content=this.content 
+                  readed=this.readed
+                  time=this.time 
+              }}}
+              </li>
+            {{/each}}
+          </ul>
         </div>
-        <div class="chatDetail_actions">
-          {{> DotsInColumn}}
+        <div class="chatDetail_footer">
+          {{> Clip }}
+          <form class="chatDetail_form">
+            {{{ Input ref='message' validate=validate.message placeholder='Сообщение' id='message' name='message'  }}}
+          </form>
+          {{{ Button type='primary' shape='circle' label='→' onClick=sendMessage }}}
         </div>
       </div>
-      <div class="chatDetail_body">
-        <ul class="chatDetail_list">
-          {{#each messages}}
-            <li>
-            {{{ ChatMessage 
-                user_id=this.user_id
-                type='message'
-                content=this.content 
-                readed=this.readed
-                time=this.time 
-            }}}
-            </li>
-          {{/each}}
-        </ul>
-      </div>
-      <div class="chatDetail_footer">
-        {{> Clip }}
-        <form class="chatDetail_form">
-          {{{ Input ref='message' validate=validate.message placeholder='Сообщение' id='message' name='message'  }}}
-        </form>
-        {{{ Button type='primary' shape='circle' label='→' onClick=sendMessage }}}
-      </div>
-    </div>
     `;
+    }
   }
 }
 
 const mapStateToProps = (state: AppState) => {
   const { activeChatId, chats, activeChat } = state;
   const chat = activeChatId ? chats.chatsById[activeChatId] : {};
-
-  return { chat, id: activeChatId, messages: activeChat.messages, connectionString: activeChat.connectionString };
+  return { chat, id: activeChatId, messages: activeChat.messages.reverse(), connectionString: activeChat.connectionString };
 };
 
 // @ts-ignore

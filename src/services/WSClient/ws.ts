@@ -15,6 +15,7 @@ class WSTransport {
       webSocket = this.#webSockets[url];
     } else {
       webSocket = new WebSocket(WS_HOST + url);
+      this.#webSockets[url] = webSocket
     }
 
     const onOpen = (event: WebSocketEventMap['open']) => {

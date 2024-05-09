@@ -1,6 +1,6 @@
 import { AddUserRequest, ChatsApi, TMessage } from '../../API/Chats';
 import { wsClient } from '../../services/WSClient';
-import { apiHasError, getApiError } from '../../utils';
+import { apiHasError, getApiError, isArray } from '../../utils';
 
 import { TLeaveChat, TStartChat } from '.';
 
@@ -17,16 +17,15 @@ const setConnectUrl = (connectionString: string) => {
 
 const setMessages = (messages: TMessage[]) => {
   const { activeChat } = window.store.getState();
-
-  window.store.set({ activeChat: { ...activeChat, messages } });
+  activeChat.messages = messages
+  window.store.set({ activeChat: {...activeChat} });
 };
 
 const addNewMessage = (message: TMessage) => {
   const { activeChat } = window.store.getState();
   const messages = activeChat.messages || [];
-  messages.push(message);
 
-  setMessages(messages);
+  setMessages([message].concat([...messages]));
 };
 
 const getOldMessages = (connectUr: string) => {
@@ -42,6 +41,18 @@ const getOldMessages = (connectUr: string) => {
 export const addUser = async (data: AddUserRequest) => {
   try {
     const responce = await chatsApi.addUser(data);
+
+    if (apiHasError(responce)) {
+      throw new Error(getApiError(responce));
+    }
+  } catch (error) {
+    throw new Error(getApiError(error));
+  }
+};
+
+export const deleteUser = async (data: AddUserRequest) => {
+  try {
+    const responce = await chatsApi.deleteUser(data);
 
     if (apiHasError(responce)) {
       throw new Error(getApiError(responce));
@@ -72,22 +83,26 @@ export const startChat = async (data: TStartChat): Promise<string | undefined> =
   wsClient.connect(connectUrl, {
     onMessage(event) {
       const info = JSON.parse(event.data);
-
+      
       switch (info.type) {
-        case 'message': {
+        case "message": {
           addNewMessage(info);
           break;
         }
 
         default: {
-          setMessages(info);
+          if (isArray(info)) {
+            setMessages(info)
+          }
           break;
         }
       }
     },
+    onOpen() {
+      getOldMessages(connectUrl);
+    },
   });
 
-  getOldMessages(connectUrl);
   setConnectUrl(connectUrl);
 
   return connectUrl;

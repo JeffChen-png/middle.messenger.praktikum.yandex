@@ -32,6 +32,10 @@ export class ChatsApi extends BaseAPI {
     return chatsAPIInstance.put('/users', { data });
   }
 
+  deleteUser(data: AddUserRequest): Promise<AddUserResponse | ApiError> {
+    return chatsAPIInstance.delete('/users', { data });
+  }
+
   getToken({ id, ...data }: GetTokenRequest): Promise<GetTokenResponse | ApiError> {
     return chatsAPIInstance.post(`/token/${id}`, { data });
   }
