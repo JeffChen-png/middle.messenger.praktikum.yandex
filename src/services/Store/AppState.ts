@@ -1,5 +1,5 @@
 import { UserResponse } from '../../API/Auth';
-import { ChatResponce } from '../../API/Chats';
+import { ChatResponce, TMessage } from '../../API/Chats';
 import { Store } from './store';
 
 export type AppState = {
@@ -15,7 +15,7 @@ export type AppState = {
   };
   activeChatId?: number;
   activeChat: {
-    messages: [];
+    messages: TMessage[];
     connectionString?: string;
   };
 };

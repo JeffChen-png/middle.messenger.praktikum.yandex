@@ -3,11 +3,24 @@ import Component from '../../services/Component';
 interface IProps {
   src?: string;
   alt?: string;
+  onClick?: () => void;
+  events: {
+    click: () => void;
+  };
 }
 
 export class Avatar extends Component<IProps> {
-  constructor(props: IProps) {
-    super({ ...props });
+  constructor({ onClick, ...props }: IProps) {
+    const click = () => {
+      onClick?.();
+    };
+
+    super({
+      ...props,
+      events: {
+        click,
+      },
+    });
   }
 
   protected render(): string {

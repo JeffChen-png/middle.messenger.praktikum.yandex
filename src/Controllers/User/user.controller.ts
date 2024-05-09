@@ -92,9 +92,8 @@ export const changePassword = async (data: ChangeProfilePasswordRequest) => {
 export const changeAvatar = async (data: ChangeProfileAvatarRequest) => {
   try {
     await userApi.changeAvatar(data);
+    router.go(pathnames.userProfile);
   } catch (error) {
     throw new Error(getApiError(error));
   }
-
-  getMe();
 };

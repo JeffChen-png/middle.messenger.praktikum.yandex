@@ -48,20 +48,20 @@ export class ChatListItemRaw extends Component<IChatItem> {
     return `
       <div class="chatListItem">
         <div class="chatListItem_avatar">
-            {{{ Avatar  src='${avatar}' }}}
+            {{{ Avatar src='${avatar}' }}}
         </div>
         <div class="chatListItem_title">
             {{{ Text weight='700' size='medium' text='${title}' ellipsis=true }}}
         </div>
         <div class="chatListItem_lastMessage">
-            {{{ Text size='small' type='secondary' text='${last_message?.user?.display_name}' ellipsis=true }}}:
-            {{{ Text size='small' type='secondary' text='${last_message?.content}' ellipsis=true }}}
+            {{{ Text size='small' type='secondary' text='${last_message?.user?.display_name || ''}' ellipsis=true }}}:
+            {{{ Text size='small' type='secondary' text='${last_message?.content || ''}' ellipsis=true }}}
         </div>
         <div class="chatListItem_time">
-            {{{ Text size='small' type='secondary' text='${last_message?.time}' }}}
+            {{{ Text size='small' type='secondary' text='${last_message?.time || ''}' }}}
         </div>
         <div class="chatListItem_messagesCount">
-            {{{ Badge count='${unread_count}' }}}
+            {{{ Badge count='${unread_count || 0}' }}}
         </div>
       </div>
     `;

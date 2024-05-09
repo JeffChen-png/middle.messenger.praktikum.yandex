@@ -1,9 +1,12 @@
 import { Input } from '../../Components';
 import { logout } from '../../Controllers/Auth';
+import { getMe } from '../../Controllers/Auth/auth.controller';
 import { changeUser } from '../../Controllers/User';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
 import { pathnames, router } from '../../services/Router';
+import { connect } from '../../services/Store';
+import { AppState } from '../../services/Store/AppState';
 import * as validators from '../../services/Validators';
 
 interface IProps {
@@ -18,6 +21,7 @@ interface IProps {
     phone?: string;
     display_name?: string;
   };
+  changeUserAvatar?: () => void;
   changeUserProfile?: (event: ElementEvents['click']) => void;
   exit?: (event: ElementEvents['click']) => void;
   changePassword?: (event: ElementEvents['click']) => void;
@@ -32,7 +36,7 @@ type Refs = {
   display_name: Input;
 };
 
-export class UserProfile extends Component<IProps, Refs> {
+export class UserProfileRaw extends Component<IProps, Refs> {
   constructor(props: IProps = {}) {
     const { src = '', alt = '', ...restProps } = props;
     super({
@@ -74,28 +78,33 @@ export class UserProfile extends Component<IProps, Refs> {
         logout();
       },
       changePassword: () => {
-        router.go(pathnames.signIn);
+        router.go(pathnames.changePassword);
+      },
+      changeUserAvatar: () => {
+        router.go(pathnames.loadAvatar);
       },
     });
   }
 
-  render() {
-    const { src, alt } = this.props;
+  componentDidMount(): void {
+    getMe();
+  }
 
+  render() {
     return `
       <div class="userProfile">
         <div class="userProfile_container shadow">
           <div class="userProfile_header">
-            {{{ Avatar src='${src}' alt='${alt}' }}}
-            {{{ Text size='large' weight='700' text=value.first_name }}}
+            {{{ Avatar src=src alt='profile' onClick=changeUserAvatar }}}
+            {{{ Text size='large' weight='700' text=first_name }}}
           </div>
           <form class="userProfile_form">
-            {{{ Input value=value.email validate=validate.email ref="email" placeholder="Почта" type='email' name='email' id='email' }}}
-            {{{ Input value=value.login validate=validate.login ref="login" placeholder="Логин" name='login' id='login' }}}
-            {{{ Input value=value.first_name validate=validate.name ref="first_name" placeholder="Имя" name='first_name' id='first_name' }}}
-            {{{ Input value=value.second_name validate=validate.name ref="second_name" placeholder="Фамилия" name='second_name' id='second_name' }}}
-            {{{ Input value=value.phone validate=validate.phone ref="phone" placeholder="Телефон" name='phone' id='phone' }}}
-            {{{ Input value=value.display_name ref="display_name" placeholder="Имя в чате" name='display_name' id='display_name' }}}
+            {{{ Input value=email validate=validate.email ref="email" placeholder="Почта" type='email' name='email' id='email' }}}
+            {{{ Input value=login validate=validate.login ref="login" placeholder="Логин" name='login' id='login' }}}
+            {{{ Input value=first_name validate=validate.name ref="first_name" placeholder="Имя" name='first_name' id='first_name' }}}
+            {{{ Input value=second_name validate=validate.name ref="second_name" placeholder="Фамилия" name='second_name' id='second_name' }}}
+            {{{ Input value=phone validate=validate.phone ref="phone" placeholder="Телефон" name='phone' id='phone' }}}
+            {{{ Input value=display_name ref="display_name" placeholder="Имя в чате" name='display_name' id='display_name' }}}
           </form>
           <div class="userProfile_actions">
             {{{ Button label="Изменить данные" type="text" onClick=changeUserProfile }}}
@@ -107,3 +116,10 @@ export class UserProfile extends Component<IProps, Refs> {
     `;
   }
 }
+
+const mapStateToProps = (state: AppState) => {
+  const { me } = state;
+  return me || {};
+};
+
+export const UserProfile = connect(mapStateToProps)(UserProfileRaw);

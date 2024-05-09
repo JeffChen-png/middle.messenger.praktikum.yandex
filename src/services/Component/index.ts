@@ -224,11 +224,15 @@ class Component<TProps extends TPropsBase = any, Refs extends TRefsBase = any> {
   // }
 
   show() {
-    this.getContent()!.style.display = 'block';
+    this.getContent()!.style.visibility = 'unset';
+
+    setTimeout(() => {
+      this.dispatchComponentDidMount();
+    }, 100);
   }
 
   hide() {
-    this.getContent()!.style.display = 'none';
+    this.getContent()!.style.visibility = 'none';
   }
 }
 

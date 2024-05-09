@@ -9,6 +9,7 @@ interface IProps {
   chatIds: number[];
   openProfile?: (event: ElementEvents['click']) => void;
   createChat?: (event: ElementEvents['click']) => void;
+  onChangeSearch?: (event: ElementEvents['change']) => void;
 }
 
 type Refs = {
@@ -31,6 +32,10 @@ export class ChatListRaw extends Component<IProps, Refs> {
 
         router.go(pathnames.createChat);
       },
+      onChangeSearch: (event: ElementEvents['change']) => {
+        const target = event.target as HTMLInputElement;
+        console.log(target.value);
+      },
     });
   }
 
@@ -39,7 +44,7 @@ export class ChatListRaw extends Component<IProps, Refs> {
       <div class="chatList">
         <div class="chatList_header">
           {{{ Button type='text' label='Профиль' onClick=openProfile }}}
-          {{{ Input ref='search' placeholder='Поиск' }}}
+          {{{ Input ref='search' placeholder='Поиск' onChange=onChangeSearch }}}
           {{{ Button type='primary' label='Добавить чат' onClick=createChat }}}
         </div>
         <div class="chatList_body">

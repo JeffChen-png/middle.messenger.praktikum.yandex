@@ -53,3 +53,10 @@ export type GetTokenRequest = {
 };
 
 export type GetTokenResponse = TToken;
+
+export type TMessage = {
+  chat_id: string;
+  content: string;
+  time: string;
+  user_id: string;
+};

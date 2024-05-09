@@ -1,16 +1,16 @@
-import { ChatResponce } from '../../API/Chats';
+import { ChatResponce, TMessage } from '../../API/Chats';
 import { Input } from '../../Components';
-import { leaveChat } from '../../Controllers/Chat';
-import { IChatMessage } from '../../Features/ChatMessage/ChatMessage';
+import { leaveChat, sendMessage as sendMessageFn } from '../../Controllers/Chat';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
+import { connect } from '../../services/Store';
 import { AppState } from '../../services/Store/AppState';
 import * as validators from '../../services/Validators';
 
 export interface IChatDetail {
   id?: number;
   connectionString?: string;
-  messages?: IChatMessage[];
+  messages?: TMessage[];
   chat?: DeepPartial<ChatResponce>;
   validate?: {};
   sendMessage: (event: ElementEvents['click']) => void;
@@ -33,7 +33,7 @@ export class ChatDetailRaw extends Component<IChatDetail, Refs> {
         this.refs.message.validate();
         const message = this.refs.message.value();
 
-        console.log({ message });
+        sendMessageFn(message);
       },
     });
   }
@@ -76,11 +76,11 @@ export class ChatDetailRaw extends Component<IChatDetail, Refs> {
           {{#each messages}}
             <li>
             {{{ ChatMessage 
-                sender=this.sender
-                type=this.type 
-                message=this.message 
+                user_id=this.user_id
+                type='message'
+                content=this.content 
                 readed=this.readed
-                created_time=this.created_time 
+                time=this.time 
             }}}
             </li>
           {{/each}}
@@ -89,7 +89,7 @@ export class ChatDetailRaw extends Component<IChatDetail, Refs> {
       <div class="chatDetail_footer">
         {{> Clip }}
         <form class="chatDetail_form">
-          {{{ Input ref='message' validate=validate.message placeholder='Сообщение' id='message' name='message' }}}
+          {{{ Input ref='message' validate=validate.message placeholder='Сообщение' id='message' name='message'  }}}
         </form>
         {{{ Button type='primary' shape='circle' label='→' onClick=sendMessage }}}
       </div>

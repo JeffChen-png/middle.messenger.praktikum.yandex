@@ -1,2 +1,2 @@
-export { addUser, leaveChat, startChat } from './chat.controlles';
+export { addUser, leaveChat, sendMessage, startChat } from './chat.controlles';
 export * from './type';

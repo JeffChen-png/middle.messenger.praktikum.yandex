@@ -26,12 +26,6 @@ export class LoadAvatar extends Component<IProps, Refs> {
     });
   }
 
-  // onSubmit = (event: ElementEvents['submit']) => {
-  //   if (props.onChange) {
-  //     props.onChange(event);
-  //   }
-  // };
-
   render() {
     return `
         {{#> Modal}}

@@ -14,6 +14,7 @@ interface IProps {
   value?: string;
   validate?: (value: string) => TValidationResult;
   onBlur: (event: ElementEvents['blur']) => void;
+  onChange?: (event: ElementEvents['change']) => void;
 }
 
 type Refs = {
@@ -67,7 +68,9 @@ export class Input extends Component<IProps, Refs> {
           name="${name}" 
           value="${value}"
           placeholder='${placeholder}' ${disabled ? 'disabled' : ''}
-          onBlur=onBlur }}}
+          onBlur=onBlur
+          onChange=onChange
+        }}}
         </label>
         {{{ ErrorLine error=error ref="errorLine" }}}
       </div>

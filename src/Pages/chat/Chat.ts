@@ -1,3 +1,4 @@
+import { getChats } from '../../Controllers/Chats';
 import Component from '../../services/Component';
 
 interface IProps {}
@@ -5,6 +6,10 @@ interface IProps {}
 export class Chat extends Component<IProps> {
   constructor(props: IProps = {}) {
     super(props);
+  }
+
+  componentDidMount(): void {
+    getChats?.();
   }
 
   render() {

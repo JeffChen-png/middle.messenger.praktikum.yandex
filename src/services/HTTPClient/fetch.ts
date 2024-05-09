@@ -62,7 +62,7 @@ export class HTTPTransport {
 
       xhr.addEventListener('load', () => {
         if (xhr.status >= 200 && xhr.status < 300) {
-          const isJson = xhr.response.headers.get('content-type')?.includes('application/json');
+          const isJson = xhr.getResponseHeader('content-type')?.includes('application/json');
           resolve(isJson ? JSON.parse(xhr.response) : xhr.response);
         } else {
           reject({ status: xhr.status, reason: xhr.response.reason });
@@ -79,7 +79,9 @@ export class HTTPTransport {
       } else if (data instanceof FormData) {
         xhr.send(data);
       } else {
-        xhr.send(JSON.stringify(data));
+        const payload = JSON.stringify(data);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(payload);
       }
     });
   }

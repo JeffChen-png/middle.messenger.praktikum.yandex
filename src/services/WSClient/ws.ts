@@ -41,6 +41,8 @@ class WSTransport {
     webSocket.addEventListener('message', onMessage); // пришло новое сообщение
     webSocket.addEventListener('error', onError); // ошибка
     webSocket.addEventListener('close', onClose); // сокет закрылся
+
+    return webSocket;
   };
 
   disconnect = (url: string) => {

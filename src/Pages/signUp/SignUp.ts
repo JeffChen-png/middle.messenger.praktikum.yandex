@@ -75,7 +75,7 @@ export class SignUpPage extends Component<IProps, Refs> {
         </form>
         <div class="signUp_actions">
           {{{ Button label="Зарегистрироваться" type="primary" onClick=register }}}
-          {{{ Button label="Войти" type="text" onClick=signIn }}}
+          {{{ Button label="Войти" type="text" onClick=onSignIn }}}
         </div>
       </div>
   `;
