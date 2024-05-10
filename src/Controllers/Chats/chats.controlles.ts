@@ -68,7 +68,7 @@ export const getChats = async () => {
       setChats(responce);
     }
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
   } finally {
     setLoading(false);
   }
@@ -89,7 +89,7 @@ export const getMoreChats = async () => {
       setChats(responce);
     }
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
   } finally {
     setLoading(false);
   }
@@ -107,7 +107,7 @@ export const createChat = async (data: CreateChatsRequest) => {
 
     router.go(pathnames.chat);
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
   }
 };
 
@@ -122,6 +122,6 @@ export const deleteChat = async (data: DeleteChatsRequest) => {
       getChats();
     }
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
   }
 };

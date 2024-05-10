@@ -17,15 +17,15 @@ const setConnectUrl = (connectionString: string) => {
 
 const setMessages = (messages: TMessage[]) => {
   const { activeChat } = window.store.getState();
-  activeChat.messages = messages
-  window.store.set({ activeChat: {...activeChat} });
+  activeChat.messages = messages;
+  window.store.set({ activeChat: { ...activeChat } });
 };
 
 const addNewMessage = (message: TMessage) => {
   const { activeChat } = window.store.getState();
   const messages = activeChat.messages || [];
 
-  setMessages([message].concat([...messages]));
+  setMessages([message, ...messages]);
 };
 
 const getOldMessages = (connectUr: string) => {
@@ -46,7 +46,7 @@ export const addUser = async (data: AddUserRequest) => {
       throw new Error(getApiError(responce));
     }
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
   }
 };
 
@@ -58,12 +58,12 @@ export const deleteUser = async (data: AddUserRequest) => {
       throw new Error(getApiError(responce));
     }
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
   }
 };
 
 export const startChat = async (data: TStartChat): Promise<string | undefined> => {
-  let token: string;
+  let token: string = '';
 
   setActiveChat(data.chatId);
   try {
@@ -75,7 +75,7 @@ export const startChat = async (data: TStartChat): Promise<string | undefined> =
       token = responce.token;
     }
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
   }
 
   const connectUrl = `/chats/${data.userId}/${data.chatId}/${token}`;
@@ -83,16 +83,16 @@ export const startChat = async (data: TStartChat): Promise<string | undefined> =
   wsClient.connect(connectUrl, {
     onMessage(event) {
       const info = JSON.parse(event.data);
-      
+
       switch (info.type) {
-        case "message": {
+        case 'message': {
           addNewMessage(info);
           break;
         }
 
         default: {
           if (isArray(info)) {
-            setMessages(info)
+            setMessages(info);
           }
           break;
         }
