@@ -1,5 +1,5 @@
 import { HOST } from '../../env';
-import { METHODS, TOptions, TUrl } from './types';
+import { HTTPMethod, METHODS, TOptions, TUrl } from './types';
 
 function queryStringify(data = {}) {
   const string = Object.entries(data)
@@ -26,22 +26,22 @@ export class HTTPTransport {
     this.#host = HOST + baseUrl;
   }
 
-  get<TResponse = unknown>(url: TUrl, { data, ...options }: Omit<TOptions, 'method'> = {}): Promise<TResponse> {
+  get: HTTPMethod = (url: TUrl, { data, ...options }: Omit<TOptions, 'method'> = {}) => {
     const path = data ? url + queryStringify(data) : url;
-    return this.request<TResponse>(path, { ...options, method: METHODS.GET }, options.timeout);
-  }
+    return this.request(path, { ...options, method: METHODS.GET }, options.timeout);
+  };
 
-  post<TResponse = unknown>(url: TUrl, options: Omit<TOptions, 'method'> = {}): Promise<TResponse> {
-    return this.request<TResponse>(url, { ...options, method: METHODS.POST }, options.timeout);
-  }
+  post: HTTPMethod = (url: TUrl, options: Omit<TOptions, 'method'> = {}) => {
+    return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
+  };
 
-  put<TResponse = unknown>(url: TUrl, options: Omit<TOptions, 'method'> = {}): Promise<TResponse> {
-    return this.request<TResponse>(url, { ...options, method: METHODS.PUT }, options.timeout);
-  }
+  put: HTTPMethod = (url: TUrl, options: Omit<TOptions, 'method'> = {}) => {
+    return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
+  };
 
-  delete<TResponse = unknown>(url: TUrl, options: Omit<TOptions, 'method'> = {}): Promise<TResponse> {
-    return this.request<TResponse>(url, { ...options, method: METHODS.DELETE }, options.timeout);
-  }
+  delete: HTTPMethod = (url: TUrl, options: Omit<TOptions, 'method'> = {}) => {
+    return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
+  };
 
   request<TResponse = unknown>(url: TUrl, options: TOptions, timeout = 5000) {
     const { headers = {}, method, data } = options;
@@ -63,7 +63,16 @@ export class HTTPTransport {
       xhr.addEventListener('load', () => {
         if (xhr.status >= 200 && xhr.status < 300) {
           const isJson = xhr.getResponseHeader('content-type')?.includes('application/json');
-          resolve(isJson ? JSON.parse(xhr.response) : xhr.response);
+
+          if (isJson) {
+            try {
+              resolve(JSON.parse(xhr.response));
+            } catch {
+              reject({ status: 400, reason: 'JSON parse error' });
+            }
+          } else {
+            resolve(xhr.response);
+          }
         } else {
           reject({ status: xhr.status, reason: xhr.response.reason });
         }

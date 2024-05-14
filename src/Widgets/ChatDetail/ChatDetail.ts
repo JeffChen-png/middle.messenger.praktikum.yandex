@@ -88,9 +88,9 @@ export class ChatDetailRaw extends Component<IChatDetail, Refs> {
       </div>
       <div class="chatDetail_footer">
         {{> Clip }}
-        <form class="chatDetail_form">
+        <div class="chatDetail_form">
           {{{ Input ref='message' validate=validate.message placeholder='Сообщение' id='message' name='message'  }}}
-        </form>
+        </div>
         {{{ Button type='primary' shape='circle' label='→' onClick=sendMessage }}}
       </div>
     </div>

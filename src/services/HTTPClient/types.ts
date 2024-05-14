@@ -18,3 +18,5 @@ export type ApiError = {
   status?: number;
   reason: string;
 };
+
+export type HTTPMethod = <R = unknown>(url: TUrl, options?: Omit<TOptions, 'method'>) => Promise<R>;

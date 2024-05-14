@@ -71,18 +71,22 @@ export const startChat = async (data: TStartChat): Promise<string | undefined> =
 
   wsClient.connect(connectUrl, {
     onMessage(event) {
-      const info = JSON.parse(event.data);
+      try {
+        const info = JSON.parse(event.data);
 
-      switch (info.type) {
-        case 'message': {
-          addNewMessage(info);
-          break;
-        }
+        switch (info.type) {
+          case 'message': {
+            addNewMessage(info);
+            break;
+          }
 
-        default: {
-          setMessages(info);
-          break;
+          default: {
+            setMessages(info);
+            break;
+          }
         }
+      } catch (error) {
+        console.log(error);
       }
     },
   });
