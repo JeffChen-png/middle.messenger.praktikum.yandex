@@ -3,6 +3,7 @@ const isObject = (item: unknown): item is Record<string | symbol, any> => {
 };
 
 export function isEqual(a: unknown, b: unknown): boolean {
+  if (!a || !b) return a === b
   if (!isObject(a) || !isObject(b)) return `${a}` === `${b}`;
 
   const akeys = Object.keys(a);

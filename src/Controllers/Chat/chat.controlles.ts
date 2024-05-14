@@ -1,6 +1,6 @@
 import { AddUserRequest, ChatsApi, TMessage } from '../../API/Chats';
 import { wsClient } from '../../services/WSClient';
-import { apiHasError, getApiError } from '../../utils';
+import { apiHasError, getApiError, isArray } from '../../utils';
 
 import { TLeaveChat, TStartChat } from '.';
 
@@ -17,16 +17,15 @@ const setConnectUrl = (connectionString: string) => {
 
 const setMessages = (messages: TMessage[]) => {
   const { activeChat } = window.store.getState();
-
-  window.store.set({ activeChat: { ...activeChat, messages } });
+  activeChat.messages = messages;
+  window.store.set({ activeChat: { ...activeChat } });
 };
 
 const addNewMessage = (message: TMessage) => {
   const { activeChat } = window.store.getState();
   const messages = activeChat.messages || [];
-  messages.push(message);
 
-  setMessages(messages);
+  setMessages([message, ...messages]);
 };
 
 const getOldMessages = (connectUr: string) => {
@@ -47,12 +46,24 @@ export const addUser = async (data: AddUserRequest) => {
       throw new Error(getApiError(responce));
     }
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
+  }
+};
+
+export const deleteUser = async (data: AddUserRequest) => {
+  try {
+    const responce = await chatsApi.deleteUser(data);
+
+    if (apiHasError(responce)) {
+      throw new Error(getApiError(responce));
+    }
+  } catch (error) {
+    console.error(getApiError(error));
   }
 };
 
 export const startChat = async (data: TStartChat): Promise<string | undefined> => {
-  let token: string;
+  let token: string = '';
 
   setActiveChat(data.chatId);
   try {
@@ -64,7 +75,7 @@ export const startChat = async (data: TStartChat): Promise<string | undefined> =
       token = responce.token;
     }
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
   }
 
   const connectUrl = `/chats/${data.userId}/${data.chatId}/${token}`;
@@ -81,7 +92,9 @@ export const startChat = async (data: TStartChat): Promise<string | undefined> =
           }
 
           default: {
-            setMessages(info);
+            if (isArray(info)) {
+              setMessages(info);
+            }
             break;
           }
         }
@@ -89,9 +102,11 @@ export const startChat = async (data: TStartChat): Promise<string | undefined> =
         console.log(error);
       }
     },
+    onOpen() {
+      getOldMessages(connectUrl);
+    },
   });
 
-  getOldMessages(connectUrl);
   setConnectUrl(connectUrl);
 
   return connectUrl;

@@ -24,8 +24,10 @@ export const searchUsers = async (data: SearchRequest): Promise<SearchResponse |
       return responce;
     }
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
   }
+
+  return undefined;
 };
 
 const changeUserValidationSchema: Record<keyof ChangeProfileRequest, typeof validators.name | undefined> = {
@@ -54,7 +56,7 @@ export const changeUser = async (data: ChangeProfileRequest) => {
   try {
     await userApi.changeProfile(data);
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
   }
 
   getMe();
@@ -82,7 +84,7 @@ export const changePassword = async (data: ChangeProfilePasswordRequest) => {
   try {
     await userApi.changePassword(data);
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
   }
 
   window.store.set({ me: undefined, chats: initState.chats });
@@ -94,6 +96,6 @@ export const changeAvatar = async (data: ChangeProfileAvatarRequest) => {
     await userApi.changeAvatar(data);
     router.go(pathnames.userProfile);
   } catch (error) {
-    throw new Error(getApiError(error));
+    console.error(getApiError(error));
   }
 };

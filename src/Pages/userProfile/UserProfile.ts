@@ -95,7 +95,7 @@ export class UserProfileRaw extends Component<IProps, Refs> {
       <div class="userProfile">
         <div class="userProfile_container shadow">
           <div class="userProfile_header">
-            {{{ Avatar src=src alt='profile' onClick=changeUserAvatar }}}
+            {{{ Avatar src=avatar alt='profile' onClick=changeUserAvatar }}}
             {{{ Text size='large' weight='700' text=first_name }}}
           </div>
           <form class="userProfile_form">

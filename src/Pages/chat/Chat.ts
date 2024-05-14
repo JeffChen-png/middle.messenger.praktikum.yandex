@@ -1,3 +1,4 @@
+import { getMe } from '../../Controllers/Auth/auth.controller';
 import { getChats } from '../../Controllers/Chats';
 import Component from '../../services/Component';
 
@@ -9,6 +10,7 @@ export class Chat extends Component<IProps> {
   }
 
   componentDidMount(): void {
+    getMe();
     getChats?.();
   }
 

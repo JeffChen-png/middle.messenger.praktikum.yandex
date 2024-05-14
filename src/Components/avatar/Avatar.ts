@@ -26,7 +26,7 @@ export class Avatar extends Component<IProps> {
   protected render(): string {
     const { src = '', alt = '' } = this.props;
 
-    const image = `<img src="${src}" alt="${alt}" />`;
+    const image = `<img src="https://ya-praktikum.tech/api/v2/resources${src}" alt="${alt}" />`;
     const empty = `{{> EmptyAvatar}}`;
     return `
       <div class="avatar">
