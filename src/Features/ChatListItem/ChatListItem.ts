@@ -1,50 +1,76 @@
+import { UserResponse } from '../../API/Auth';
+import { ChatResponce } from '../../API/Chats';
+import { startChat } from '../../Controllers/Chat';
 import Component from '../../services/Component';
+import { ElementEvents } from '../../services/Component/types';
+import { connect } from '../../services/Store';
+import { AppState } from '../../services/Store/AppState';
 
 export interface IChatItem {
-  avatar?: string;
-  alt?: string;
-  title?: string;
-  lastMessage?: string;
-  time?: string;
-  messagesCount?: number;
+  id: number;
+  user: UserResponse;
+  chat: DeepPartial<ChatResponce>;
+  events: {
+    click: (event: ElementEvents['click']) => void;
+  };
 }
 
-export class ChatListItem extends Component<IChatItem> {
+export class ChatListItemRaw extends Component<IChatItem> {
   constructor(props: IChatItem) {
-    const { avatar = '', alt = '', title = '', lastMessage = '', time = '', messagesCount = 0, ...restProps } = props;
+    const { id, chat, user, ...restProps } = props;
+
+    const { avatar = '', title = '', unread_count = 0, last_message = {}, ...restChat } = chat;
+
+    const click = () => {
+      startChat({ chatId: id, userId: user.id });
+    };
 
     super({
       ...restProps,
-      avatar,
-      alt,
-      title,
-      lastMessage,
-      time,
-      messagesCount,
+      id,
+      chat: {
+        ...restChat,
+        avatar,
+        title,
+        unread_count,
+        last_message,
+      },
+      user,
+      events: {
+        click,
+      },
     });
   }
 
   render() {
-    const { avatar, alt, title, lastMessage, time, messagesCount } = this.props;
+    const { avatar, title, last_message, unread_count } = this.props.chat;
+    console.log(last_message)
 
+    const name = last_message?.user?.first_name
     return `
       <div class="chatListItem">
         <div class="chatListItem_avatar">
-            {{{ Avatar alt='${alt}' src='${avatar}' }}}
+            {{{ Avatar src='${avatar}' }}}
         </div>
         <div class="chatListItem_title">
             {{{ Text weight='700' size='medium' text='${title}' ellipsis=true }}}
         </div>
         <div class="chatListItem_lastMessage">
-            {{{ Text size='small' type='secondary' text='${lastMessage}' ellipsis=true }}}
-        </div>
-        <div class="chatListItem_time">
-            {{{ Text size='small' type='secondary' text='${time}' }}}
+            {{{ Text size='small' type='secondary' text='${name ? name + ":" : ''}' ellipsis=true }}}
+            {{{ Text size='small' type='secondary' text='${last_message?.content || ''}' ellipsis=true }}}
         </div>
         <div class="chatListItem_messagesCount">
-            {{{ Badge count='${messagesCount}' }}}
+            {{{ Badge count='${unread_count || 0}' }}}
         </div>
       </div>
     `;
   }
 }
+
+const mapStateToProps = (state: AppState, props: IChatItem) => {
+  const { id } = props;
+  return { chat: state.chats.chatsById[id] || {}, user: state.me };
+};
+
+// @ts-ignore
+export const ChatListItem = connect(mapStateToProps)(ChatListItemRaw);

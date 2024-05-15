@@ -1,7 +1,8 @@
 import { Input } from '../../Components';
+import { signin } from '../../Controllers/Auth';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
-import { navigate } from '../../services/Navigate';
+import { pathnames, router } from '../../services/Router';
 import * as validators from '../../services/Validators';
 
 interface IProps {}
@@ -24,21 +25,12 @@ export class SignInPage extends Component<IProps, Refs> {
         const login = this.refs.login.value();
         const password = this.refs.password.value();
 
-        if (!login) {
-          return;
-        }
-
-        console.log({
-          login,
-          password,
-        });
-
-        navigate('list');
+        signin({ login, password });
       },
       onSignUp: (event: ElementEvents['click']) => {
         event.preventDefault();
 
-        navigate('signUp');
+        router.go(pathnames.signUp);
       },
     });
   }

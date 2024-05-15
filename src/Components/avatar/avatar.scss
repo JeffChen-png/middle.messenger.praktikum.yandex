@@ -5,9 +5,14 @@
   align-items: center;
 }
 
+.avatar:hover {
+  filter: grayscale(0.1);
+}
+
 .avatar img {
   width: 100%;
   height: auto;
   object-fit: cover;
   aspect-ratio: 1 / 1;
 }
+

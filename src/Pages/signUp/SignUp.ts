@@ -1,7 +1,8 @@
 import { Input } from '../../Components';
+import { signup } from '../../Controllers/Auth';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
-import { navigate } from '../../services/Navigate';
+import { pathnames, router } from '../../services/Router';
 import * as validators from '../../services/Validators';
 
 interface IProps {}
@@ -28,7 +29,7 @@ export class SignUpPage extends Component<IProps, Refs> {
       onSignIn: (event: ElementEvents['click']) => {
         event.preventDefault();
 
-        navigate('signIn');
+        router.go(pathnames.signIn);
       },
       register: (event: ElementEvents['click']) => {
         event.preventDefault();
@@ -45,11 +46,14 @@ export class SignUpPage extends Component<IProps, Refs> {
           fieldsValues[field] = fieldValue;
         });
 
-        console.log(fieldsValues);
-
-        if (!isValid) return;
-
-        navigate('list');
+        signup({
+          login: fieldsValues.login,
+          email: fieldsValues.email,
+          first_name: fieldsValues.firstName,
+          second_name: fieldsValues.secondName,
+          phone: fieldsValues.phone,
+          password: fieldsValues.password,
+        });
       },
     });
   }
@@ -71,7 +75,7 @@ export class SignUpPage extends Component<IProps, Refs> {
         </form>
         <div class="signUp_actions">
           {{{ Button label="Зарегистрироваться" type="primary" onClick=register }}}
-          {{{ Button label="Войти" type="text" onClick=signIn }}}
+          {{{ Button label="Войти" type="text" onClick=onSignIn }}}
         </div>
       </div>
   `;

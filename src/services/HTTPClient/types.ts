@@ -13,3 +13,10 @@ export type TOptions = {
   data?: any;
   retries?: number;
 };
+
+export type ApiError = {
+  status?: number;
+  reason: string;
+};
+
+export type HTTPMethod = <R = unknown>(url: TUrl, options?: Omit<TOptions, 'method'>) => Promise<R>;

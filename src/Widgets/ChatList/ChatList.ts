@@ -1,28 +1,40 @@
 import { Input } from '../../Components';
-import { IChatItem } from '../../Features/ChatListItem/ChatListItem';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
-import { navigate } from '../../services/Navigate';
+import { pathnames, router } from '../../services/Router';
+import { connect } from '../../services/Store';
+import { AppState } from '../../services/Store/AppState';
 
 interface IProps {
-  chats?: IChatItem[];
+  chatIds: number[];
   openProfile?: (event: ElementEvents['click']) => void;
+  createChat?: (event: ElementEvents['click']) => void;
+  onChangeSearch?: (event: ElementEvents['change']) => void;
 }
 
 type Refs = {
   search: Input;
 };
 
-export class ChatList extends Component<IProps, Refs> {
-  constructor(props: IProps = {}) {
-    const { chats = [], ...restProps } = props;
+export class ChatListRaw extends Component<IProps, Refs> {
+  constructor(props: IProps) {
+    const { chatIds, ...restProps } = props;
     super({
       ...restProps,
-      chats,
+      chatIds,
       openProfile: (event: ElementEvents['click']) => {
         event.preventDefault();
 
-        navigate('userProfile');
+        router.go(pathnames.userProfile);
+      },
+      createChat: (event: ElementEvents['click']) => {
+        event.preventDefault();
+
+        router.go(pathnames.createChat);
+      },
+      onChangeSearch: (event: ElementEvents['change']) => {
+        const target = event.target as HTMLInputElement;
+        console.log(target.value);
       },
     });
   }
@@ -32,19 +44,14 @@ export class ChatList extends Component<IProps, Refs> {
       <div class="chatList">
         <div class="chatList_header">
           {{{ Button type='text' label='Профиль' onClick=openProfile }}}
-          {{{ Input ref='search' placeholder='Поиск' }}}
+          {{{ Input ref='search' placeholder='Поиск' onChange=onChangeSearch }}}
+          {{{ Button type='primary' label='Добавить чат' onClick=createChat }}}
         </div>
         <div class="chatList_body">
           <ul>
-            {{#each chats}}
+            {{#each chatIds}}
               <li>
-                {{{ ChatListItem 
-                  alt=this.alt 
-                  src=this.src 
-                  title=this.title 
-                  lastMessage=this.lastMessage
-                  messagesCount=this.messagesCount 
-                  time=this.time }}}
+                {{{ ChatListItem id=this }}}
               </li>
             {{/each}}
           </ul>
@@ -53,3 +60,10 @@ export class ChatList extends Component<IProps, Refs> {
     `;
   }
 }
+
+const mapStateToProps = (state: AppState) => {
+  return { chatIds: state.chats.chatIds };
+};
+
+// @ts-ignore
+export const ChatList = connect(mapStateToProps)(ChatListRaw);

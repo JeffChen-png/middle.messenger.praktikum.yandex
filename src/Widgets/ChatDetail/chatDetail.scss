@@ -28,6 +28,9 @@
 .chatDetail_actions {
   grid-area: actions;
   justify-self: end;
+
+  display: flex;
+
 }
 
 .chatDetail_body {

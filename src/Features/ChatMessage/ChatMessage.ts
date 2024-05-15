@@ -1,36 +1,32 @@
+import { TMessage } from '../../API/Chats';
 import Component from '../../services/Component';
+import { connect } from '../../services/Store';
+import { AppState } from '../../services/Store/AppState';
 
-export interface IChatMessage {
-  sender?: 'me' | 'default';
-  type?: 'medial' | 'default';
-  message?: string;
-  created_time: string;
-  readed?: boolean;
+export interface IChatMessage extends TMessage {
+  me: number | undefined;
 }
 
-export class ChatMessage extends Component<IChatMessage> {
+export class ChatMessageRaw extends Component<IChatMessage> {
   constructor(props: IChatMessage) {
-    const { sender = 'default', type = 'default', message = '', readed = false, ...restProps } = props;
-
     super({
-      ...restProps,
-      sender,
-      type,
-      message,
-      readed,
+      ...props,
     });
   }
 
   render() {
-    const { sender, type, message, created_time } = this.props;
+    const { user_id, content, time, me } = this.props;
+    console.log(user_id, me)
+    const sender = String(user_id) === String(me) ? 'me' : 'default';
+    const messageTime = new Date(time).toDateString();
 
     return `
-      <div class="chatMessage" data-sender="${sender}" data-type="${type}">
+      <div class="chatMessage" data-sender="${sender}" data-type="message">
         <div class="chatMessage_text">
-            {{{ Text type='primary' size='small' weight='500' text='${message}' }}}
+            {{{ Text type='primary' size='small' weight='500' text='${content}' }}}
         </div>
         <div class="chatMessage_time">
-            {{{ Text type='primary' size='small' weight='500' text='${created_time}' }}}
+            {{{ Text type='primary' size='small' weight='500' text='${messageTime}' }}}
         </div>
         {{#if readed}}
           <div class="chatMessage_status">
@@ -41,3 +37,10 @@ export class ChatMessage extends Component<IChatMessage> {
     `;
   }
 }
+
+const mapStateToProps = (state: AppState) => {
+  return { me: state.me?.id };
+};
+
+// @ts-ignore
+export const ChatMessage = connect(mapStateToProps)(ChatMessageRaw);

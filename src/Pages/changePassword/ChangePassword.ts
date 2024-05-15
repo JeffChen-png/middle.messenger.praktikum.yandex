@@ -1,7 +1,7 @@
 import { Input } from '../../Components';
+import { changePassword } from '../../Controllers/User';
 import Component from '../../services/Component';
 import { ElementEvents } from '../../services/Component/types';
-import { navigate } from '../../services/Navigate';
 import * as validators from '../../services/Validators';
 
 interface IProps {
@@ -43,11 +43,10 @@ export class ChangePassword extends Component<IProps, Refs> {
           fieldsValues[field] = value;
         });
 
-        console.log({ fieldsValues });
-
-        if (!isValid) return;
-
-        navigate('signIn');
+        changePassword({
+          oldPassword: fieldsValues.oldPassword,
+          newPassword: fieldsValues.newPassword,
+        });
       },
     });
   }
