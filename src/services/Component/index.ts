@@ -193,7 +193,7 @@ class Component<TProps extends TPropsBase = any, Refs extends TRefsBase = any> {
     return temp.content;
   }
 
-  protected render(): string | null {
+  render(): string | null {
     return null;
   }
 

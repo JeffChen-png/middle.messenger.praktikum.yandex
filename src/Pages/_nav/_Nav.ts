@@ -17,7 +17,7 @@ export class _Nav extends Component<IProps> {
     });
   }
 
-  protected render(): string {
+  render(): string {
     return `
       <nav>
           <ul class="people_list">

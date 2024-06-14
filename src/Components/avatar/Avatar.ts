@@ -23,7 +23,7 @@ export class Avatar extends Component<IProps> {
     });
   }
 
-  protected render(): string {
+  render(): string {
     const { src = '', alt = '' } = this.props;
 
     const image = `<img src="https://ya-praktikum.tech/api/v2/resources${src}" alt="${alt}" />`;

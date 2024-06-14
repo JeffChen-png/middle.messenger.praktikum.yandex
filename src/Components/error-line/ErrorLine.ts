@@ -6,7 +6,7 @@ interface Props {
 type Ref = {};
 
 export class ErrorLine extends Component<Props, Ref> {
-  protected render(): string {
+  render(): string {
     return `
             <div class="input__text-error {{#if error}}visible{{/if}}">{{error}}</div>
         `;

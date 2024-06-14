@@ -7,7 +7,7 @@ export class Modal extends Component<IProps> {
     super({ ...props });
   }
 
-  protected render(): string {
+  render(): string {
     return `
       <div class="modal_root">
         <div class="modal_container">

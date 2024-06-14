@@ -58,7 +58,7 @@ export class UploadFile extends Component<IProps, Refs> {
     return true;
   }
 
-  protected render(): string {
+  render(): string {
     const { id, formId, disabled, name } = this.props;
     return `
       <form id='${formId}' name='${formId}'>

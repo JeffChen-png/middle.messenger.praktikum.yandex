@@ -30,7 +30,7 @@ export class Text extends Component<IProps> {
     });
   }
 
-  protected render(): string {
+  render(): string {
     const { type, weight, text, ellipsis, underline, size } = this.props;
     return `
     <span class='text text_${type} ${ellipsis ? 'ellipsis' : ''} ${underline ? 'underline' : ''}' data-size="${size}"
