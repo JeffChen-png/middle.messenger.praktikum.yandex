@@ -1,7 +1,7 @@
 import { ComponentClass } from '../Component';
 import { Route } from './Route';
 
-class Router {
+export class Router {
   routes: Route[];
 
   history: History;
