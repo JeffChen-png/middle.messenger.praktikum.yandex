@@ -13,7 +13,7 @@ export function connect(mapStateToProps: (state: AppState, props?: TPropsBase) =
       constructor(props: P) {
         const { store } = window;
         // сохраняем начальное состояние
-        let state = {...mapStateToProps(store.getState(), props)}
+        let state = { ...mapStateToProps(store.getState(), props) };
 
         super({ ...props, ...state });
 

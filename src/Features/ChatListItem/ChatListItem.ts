@@ -44,9 +44,8 @@ export class ChatListItemRaw extends Component<IChatItem> {
 
   render() {
     const { avatar, title, last_message, unread_count } = this.props.chat;
-    console.log(last_message)
 
-    const name = last_message?.user?.first_name
+    const name = last_message?.user?.first_name;
     return `
       <div class="chatListItem">
         <div class="chatListItem_avatar">
@@ -56,7 +55,7 @@ export class ChatListItemRaw extends Component<IChatItem> {
             {{{ Text weight='700' size='medium' text='${title}' ellipsis=true }}}
         </div>
         <div class="chatListItem_lastMessage">
-            {{{ Text size='small' type='secondary' text='${name ? name + ":" : ''}' ellipsis=true }}}
+            {{{ Text size='small' type='secondary' text='${name ? `${name}:` : ''}' ellipsis=true }}}
             {{{ Text size='small' type='secondary' text='${last_message?.content || ''}' ellipsis=true }}}
         </div>
         <div class="chatListItem_messagesCount">

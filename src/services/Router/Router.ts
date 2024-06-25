@@ -1,7 +1,7 @@
 import { ComponentClass } from '../Component';
 import { Route } from './Route';
 
-class Router {
+export class Router {
   routes: Route[];
 
   history: History;
@@ -71,5 +71,6 @@ class Router {
 }
 
 const router = new Router();
+const testRouter = new Router();
 
-export { router };
+export { router, testRouter };

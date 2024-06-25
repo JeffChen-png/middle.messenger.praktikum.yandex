@@ -56,7 +56,7 @@ export class Input extends Component<IProps, Refs> {
     return validation.isValid;
   }
 
-  protected render(): string {
+  render(): string {
     const { id, disabled, type, name, placeholder, value } = this.props;
     return `
       <div class='input'>
