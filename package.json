@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "lint": "eslint . --ext .ts --ext .js",
     "start": "npm install & npm run build",
-    "test": "mocha --es-module-specifier-resolution=node"
+    "test": "mocha --es-module-specifier-resolution=node",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/chai": "4.3.16",
@@ -43,9 +44,5 @@
   "dependencies": {
     "jsdom": "24.1.0",
     "nanoid": "5.0.4"
-  },
-  "hooks": {
-    "pre-commit": "npm run lint",
-    "pre-push": "npm run test"
   }
 }
