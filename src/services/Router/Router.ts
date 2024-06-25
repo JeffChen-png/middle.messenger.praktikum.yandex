@@ -71,5 +71,6 @@ export class Router {
 }
 
 const router = new Router();
+const testRouter = new Router();
 
-export { router };
+export { router, testRouter };

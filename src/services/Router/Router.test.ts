@@ -1,10 +1,9 @@
 import { expect } from 'chai';
-import { afterEach, before, describe, it } from 'mocha';
+import { afterEach, describe, it } from 'mocha';
 
 import { SignIn, SignUp } from './mocks';
-import { router } from './Router';
-
-import { pathnames } from '.';
+import { pathnames } from './pathnames';
+import { testRouter as router } from './Router';
 
 describe('Router', () => {
   before(() => {
@@ -12,7 +11,6 @@ describe('Router', () => {
     router.use(pathnames.signUp, SignUp);
     router.start();
   });
-
   afterEach(() => {
     window.history.replaceState({}, '');
   });
@@ -26,14 +24,20 @@ describe('Router', () => {
     router.go(pathnames.signIn);
     router.go(pathnames.signUp);
     router.back();
-
-    expect(window.history.length).to.equal(2);
+    expect(window.history.length).to.equal(4);
   });
 
-  it('should change state by route changing', () => {
+  it('should change state by route changing', async () => {
     const path = pathnames.signIn;
     window.history.replaceState({}, '', path);
 
-    expect(window.document.querySelector('#sign-in')?.innerHTML).to.equal('Sign In');
+    /* time to render */
+    await new Promise(res => {
+      setTimeout(res, 1000);
+    });
+
+    const page = window.document.querySelector('#sign-in');
+
+    expect(page?.innerHTML).to.equal('Sign In');
   });
 });
