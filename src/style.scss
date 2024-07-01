@@ -1,26 +1,23 @@
-@import '/src/Components/avatar/avatar.scss';
-@import '/src/Components/badge/badge.scss';
-@import '/src/Components/button/button.scss';
-@import '/src/Components/input/input.scss';
-@import '/src/Components/modal/modal.scss';
-@import '/src/Components/text/text.scss';
-
-@import '/src/Features/ChatListItem/chatListItem.scss';
-@import '/src/Features/ChatMessage/chatMessage.scss';
-
-@import '/src/Widgets/ChatDetail/chatDetail.scss';
-@import '/src/Widgets/ChatList/chatList.scss';
-
-@import '/src/Pages/chat/chat.scss';
-@import '/src/Pages/notFound/notFound.scss';
-@import '/src/Pages/serverError/serverError.scss';
-@import '/src/Pages/signIn/signIn.scss';
-@import '/src/Pages/signUp/signUp.scss';
-@import '/src/Pages/addUser/addUser.scss';
-@import '/src/Pages/removeUser/removeUser.scss';
-@import '/src/Pages/loadAvatar/loadAvatar.scss';
-@import '/src/Pages/userProfile/userProfile.scss';
-@import '/src/Pages/changePassword/changePassword.scss';
+@import url('/src/Components/avatar/avatar.scss');
+@import url('/src/Components/badge/badge.scss');
+@import url('/src/Components/button/button.scss');
+@import url('/src/Components/input/input.scss');
+@import url('/src/Components/modal/modal.scss');
+@import url('/src/Components/text/text.scss');
+@import url('/src/Features/ChatListItem/chatListItem.scss');
+@import url('/src/Features/ChatMessage/chatMessage.scss');
+@import url('/src/Widgets/ChatDetail/chatDetail.scss');
+@import url('/src/Widgets/ChatList/chatList.scss');
+@import url('/src/Pages/chat/chat.scss');
+@import url('/src/Pages/notFound/notFound.scss');
+@import url('/src/Pages/serverError/serverError.scss');
+@import url('/src/Pages/signIn/signIn.scss');
+@import url('/src/Pages/signUp/signUp.scss');
+@import url('/src/Pages/addUser/addUser.scss');
+@import url('/src/Pages/removeUser/removeUser.scss');
+@import url('/src/Pages/loadAvatar/loadAvatar.scss');
+@import url('/src/Pages/userProfile/userProfile.scss');
+@import url('/src/Pages/changePassword/changePassword.scss');
 
 /* 
   z-index
@@ -44,16 +41,16 @@
   --underline-color: #4c5b6c;
   --border-color: #d0cdc9;
   --light-color: #f1f1f1;
-  --bg-color: #ffffff;
+  --bg-color: #fff;
 }
 
 #app {
   background-color: var(--bg-color);
-  font-family: 'Roboto', sans-serif;
+  font-family: Roboto, sans-serif;
 }
 
 .shadow {
-  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 0 6px 0 rgb(0 0 0 / 14%);
 }
 
 .error {
