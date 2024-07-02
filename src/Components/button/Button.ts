@@ -35,7 +35,7 @@ export class Button extends Component<IProps> {
     });
   }
 
-  protected render(): string {
+  render(): string {
     const { type, label, shape, danger, submit, formFor } = this.props;
     const formTypeSubmit = submit ? 'type="submit"' : '';
 

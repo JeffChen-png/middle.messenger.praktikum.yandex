@@ -1,6 +1,14 @@
 {
+  "fix": true,
   "extends": "stylelint-config-standard",
+  "plugins": [
+    "stylelint-scss"
+  ],
   "ignoreFiles": [
     "dist/*"
-  ]
+  ],
+  "rules": {
+    "selector-class-pattern": null,
+    "declaration-block-no-redundant-longhand-properties": null
+  }
 }

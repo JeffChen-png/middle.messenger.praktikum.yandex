@@ -16,7 +16,7 @@ export class ChatMessageRaw extends Component<IChatMessage> {
 
   render() {
     const { user_id, content, time, me } = this.props;
-    console.log(user_id, me)
+
     const sender = String(user_id) === String(me) ? 'me' : 'default';
     const messageTime = new Date(time).toDateString();
 

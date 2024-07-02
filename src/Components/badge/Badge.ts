@@ -10,7 +10,7 @@ export class Badge extends Component<IProps> {
     super({ count, ...restProps });
   }
 
-  protected render(): string {
+  render(): string {
     const { count } = this.props;
     return `
       <div class='badge'>

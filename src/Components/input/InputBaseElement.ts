@@ -54,7 +54,7 @@ export class InputBaseElement extends Component<IProps, Refs> {
     return this.refs.input.value;
   }
 
-  protected render(): string {
+  render(): string {
     const { id, value, disabled, className, type, name, placeholder } = this.props;
 
     const formValue = Object.prototype.hasOwnProperty.call(this.props, 'value') ? `value="${value}"` : '';

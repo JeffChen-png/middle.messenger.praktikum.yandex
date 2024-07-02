@@ -8,19 +8,17 @@
   grid-template-areas:
     'text text text'
     '. time status';
-
   padding: 12px 8px 8px 12px;
   background-color: color-mix(in srgb, var(--border-color), transparent 50%);
   border-radius: 15px;
-  border-top-left-radius: 0px;
+  border-top-left-radius: 0;
 }
 
 .chatMessage[data-sender='me'] {
   background-color: color-mix(in srgb, var(--main-color), transparent 50%);
   margin-left: auto;
-
   border-radius: 15px;
-  border-bottom-right-radius: 0px;
+  border-bottom-right-radius: 0;
 }
 
 .chatMessage[data-type='media'] {

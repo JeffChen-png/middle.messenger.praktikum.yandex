@@ -8,11 +8,18 @@
     "build": " vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .ts --ext .js",
-    "start": "npm install & npm run build"
+    "start": "npm install & npm run build",
+    "test": "mocha --es-module-specifier-resolution=node",
+    "stylelint": "stylelint '**/*{.css,.scss}'",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "@types/chai": "4.3.16",
+    "@types/mocha": "10.0.6",
+    "@types/sinon": "17.0.3",
     "@typescript-eslint/eslint-plugin": "6.18.0",
     "@typescript-eslint/parser": "6.18.0",
+    "chai": "5.1.1",
     "eslint": "8.56.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "9.1.0",
@@ -21,17 +28,23 @@
     "eslint-plugin-simple-import-sort": "10.0.0",
     "eslint-plugin-unicorn": "50.0.1",
     "handlebars": "4.7.8",
+    "husky": "9.0.11",
+    "mocha": "10.4.0",
     "prettier": "3.1.1",
     "sass": "1.69.5",
+    "sinon": "18.0.0",
     "stylelint": "16.1.0",
     "stylelint-config-standard": "36.0.0",
+    "stylelint-scss": "^6.3.2",
+    "ts-node": "10.9.2",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
-    "vite-plugin-checker": "0.6.2",
+    "vite-plugin-checker": "^0.6.4",
     "vite-plugin-handlebars": "1.6.0",
     "vite-tsconfig-paths": "4.3.1"
   },
   "dependencies": {
+    "jsdom": "24.1.0",
     "nanoid": "5.0.4"
   }
 }
